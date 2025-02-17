@@ -16,6 +16,7 @@ export function initializePickEmSocket(server: http.Server) {
 
   io.on('connection', async (socket) => {
     // INICIALIZACIÓN
+    console.log("connected")
     await fetchPlayers(socket);
 
     socket.on('playerUpdated', async () => {

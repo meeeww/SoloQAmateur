@@ -4,7 +4,6 @@ import path from 'path';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import apicache from 'apicache';
 import { initializePickEmSocket } from './sockets/PlayerSocket';
 import http from 'http';
 
@@ -28,8 +27,6 @@ const server = http.createServer(app); // Crear servidor HTTP
 const io = initializePickEmSocket(server);
 
 // Configuración de middleware
-const cache = apicache.middleware;
-app.use(cache('10 minutes'));
 
 const publicPath = path.resolve('public');
 app.use('/assets', express.static(publicPath));

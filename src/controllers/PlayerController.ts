@@ -59,4 +59,21 @@ export class PlayerController {
       resultHandler({ status: 200, success: true, result: players }, res);
     },
   );
+
+  static createPlayersFromMultiOpgg = tryCatch(
+    async (req: Request, res: Response): Promise<void> => {
+      const { multiOpggUrl } = req.body;
+
+      if (!multiOpggUrl) {
+        throw new Error('El enlace de MultiOPGG es obligatorio.');
+      }
+
+      console.log(multiOpggUrl)
+
+      const players = await playerService.createPlayersFromMultiOpgg(
+        multiOpggUrl,
+      );
+      resultHandler({ status: 201, success: true, result: players }, res);
+    },
+  );
 }

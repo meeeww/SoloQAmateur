@@ -15,6 +15,17 @@ export class PlayerService {
     return this.playerRepository.find();
   }
 
+  async getAllPlayersSimple(): Promise<
+    Pick<
+      Player,
+      'leagueTag' | 'leagueName' | 'id' | 'leagueId' | 'leaguePuuid'
+    >[]
+  > {
+    return this.playerRepository.find({
+      select: ['leagueTag', 'leagueName', 'id', 'leagueId', 'leaguePuuid'],
+    });
+  }
+
   // 📌 Obtener un jugador por ID
   async getPlayerById(id: number): Promise<Player> {
     const player = await this.playerRepository.findOneBy({ id });
@@ -48,5 +59,57 @@ export class PlayerService {
     return this.playerRepository.find({
       where: { rol: role },
     });
+  }
+
+  async createPlayersFromMultiOpgg(url: string): Promise<Player[]> {
+    const players: Player[] = [];
+
+    // 1️⃣ Extraer la lista de invocadores del enlace
+    const match = url.match(/summoners=([^&]*)/);
+    if (!match) {
+      throw new Error('No se encontraron invocadores en el enlace.');
+    }
+
+    const summoners = decodeURIComponent(match[1]);
+    const summonerList = summoners.split(',');
+
+    // 2️⃣ Crear o actualizar jugadores
+    for (const summoner of summonerList) {
+      const [leagueName, leagueTag] = summoner.split('#');
+      if (!leagueName || !leagueTag) continue;
+
+      const playerData = {
+        leagueName: leagueName.trim(),
+        leagueTag: leagueTag.trim(),
+        username: leagueName.trim(),
+      };
+
+      // Buscar si ya existe el jugador
+      const existingPlayer = await this.playerRepository.findOne({
+        where: {
+          leagueName: playerData.leagueName,
+          leagueTag: playerData.leagueTag,
+        },
+      });
+
+      if (existingPlayer) {
+        // Actualizar el jugador existente
+        await this.playerRepository.update(existingPlayer.id, playerData);
+
+        // Crear una instancia real de Player
+        const updatedPlayer = Object.assign(
+          new Player(),
+          existingPlayer,
+          playerData,
+        );
+        players.push(updatedPlayer);
+      } else {
+        // Crear nuevo jugador
+        const newPlayer = await this.createPlayer(playerData);
+        players.push(newPlayer);
+      }
+    }
+
+    return players;
   }
 }
