@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
 
 export enum PlayerRole {
   TOP = 'Toplaner',
@@ -49,9 +55,27 @@ export class Player {
   @Column({ type: 'varchar', length: 5 })
   opgg!: string;
 
+  @Column({ type: 'bigint' })
+  createdAt!: number;
+
+  @Column({ type: 'bigint' })
+  lastUpdate!: number;
+
   @Column({
     type: 'enum',
     enum: PlayerRole,
   })
   rol!: PlayerRole;
+
+  @BeforeInsert()
+  setCreatedAt() {
+    const currentUnixTime = Math.floor(Date.now() / 1000);
+    this.createdAt = currentUnixTime;
+    this.lastUpdate = currentUnixTime;
+  }
+
+  @BeforeUpdate()
+  setUpdatedAt() {
+    this.lastUpdate = Math.floor(Date.now() / 1000);
+  }
 }

@@ -1,68 +1,62 @@
-import { Hono } from 'hono';
+import { Request, Response } from 'express';
 import { PlayerService } from '../services/PlayerService';
-import { PlayerRole } from '../entities/PlayerEntity';
+import { NotFoundError } from '../middlewares/appError';
 import { resultHandler } from '../middlewares/resultHandler';
+import tryCatch from '../utils/tryCatch';
 
 const playerService = new PlayerService();
 
-const playerController = new Hono();
-
-// 📌 Obtener todos los jugadores
-playerController.get('/players', async (c) => {
-  const players = await playerService.findAll();
-  return resultHandler({ status: 200, success: true, result: players }, c);
-});
-
-// 📌 Obtener un jugador por ID
-playerController.get('/players/:id', async (c) => {
-  const { id } = c.req.param();
-
-  const player = await playerService.findById(Number(id));
-  return resultHandler({ status: 200, success: true, result: player }, c);
-});
-
-// 📌 Crear un nuevo jugador
-playerController.post('/players', async (c) => {
-  const playerData = await c.req.json();
-
-  const newPlayer = await playerService.create(playerData);
-  return resultHandler({ status: 201, success: true, result: newPlayer }, c);
-});
-
-// 📌 Actualizar un jugador
-playerController.put('/players/:id', async (c) => {
-  const { id } = c.req.param();
-  const playerData = await c.req.json();
-
-  const updatedPlayer = await playerService.update(Number(id), playerData);
-  return resultHandler(
-    { status: 200, success: true, result: updatedPlayer },
-    c,
+export class PlayerController {
+  static createPlayer = tryCatch(
+    async (req: Request, res: Response): Promise<void> => {
+      const player = await playerService.createPlayer(req.body);
+      resultHandler({ status: 201, success: true, result: player }, res);
+    },
   );
-});
 
-// 📌 Eliminar un jugador
-playerController.delete('/players/:id', async (c) => {
-  const { id } = c.req.param();
-
-  await playerService.delete(Number(id));
-  return resultHandler(
-    { status: 204, success: true, result: 'Jugador eliminado' },
-    c,
+  static getPlayerById = tryCatch(
+    async (req: Request, res: Response): Promise<void> => {
+      const player = await playerService.getPlayerById(
+        parseInt(req.params.id, 10),
+      );
+      if (!player) {
+        throw new NotFoundError('Jugador no encontrado.');
+      }
+      resultHandler({ status: 200, success: true, result: player }, res);
+    },
   );
-});
 
-// 📌 Filtrar jugadores por rol
-playerController.get('/players/role/:role', async (c) => {
-  const { role } = c.req.param();
-  if (!Object.values(PlayerRole).includes(role as PlayerRole)) {
-    return resultHandler(
-      { status: 400, success: false, result: 'Rol no válido' },
-      c,
-    );
-  }
-  const players = await playerService.findByRole(role as PlayerRole);
-  return resultHandler({ status: 200, success: true, result: players }, c);
-});
+  static updatePlayer = tryCatch(
+    async (req: Request, res: Response): Promise<void> => {
+      const player = await playerService.updatePlayer(
+        parseInt(req.params.id, 10),
+        req.body,
+      );
+      if (!player) {
+        throw new NotFoundError('Jugador no encontrado.');
+      }
+      resultHandler({ status: 200, success: true, result: player }, res);
+    },
+  );
 
-export default playerController;
+  static deletePlayer = tryCatch(
+    async (req: Request, res: Response): Promise<void> => {
+      await playerService.deletePlayer(parseInt(req.params.id, 10));
+      resultHandler(
+        {
+          status: 204,
+          success: true,
+          result: 'Jugador eliminado con éxito.',
+        },
+        res,
+      );
+    },
+  );
+
+  static getAllPlayers = tryCatch(
+    async (_: Request, res: Response): Promise<void> => {
+      const players = await playerService.getAllPlayers();
+      resultHandler({ status: 200, success: true, result: players }, res);
+    },
+  );
+}

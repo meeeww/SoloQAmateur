@@ -11,32 +11,32 @@ export class PlayerService {
   }
 
   // 📌 Obtener todos los jugadores
-  async findAll(): Promise<Player[]> {
+  async getAllPlayers(): Promise<Player[]> {
     return this.playerRepository.find();
   }
 
   // 📌 Obtener un jugador por ID
-  async findById(id: number): Promise<Player> {
+  async getPlayerById(id: number): Promise<Player> {
     const player = await this.playerRepository.findOneBy({ id });
     if (!player) throw new NotFoundError(`Jugador con ID ${id} no encontrado`);
     return player;
   }
 
   // 📌 Crear un nuevo jugador
-  async create(playerData: Partial<Player>): Promise<Player> {
+  async createPlayer(playerData: Partial<Player>): Promise<Player> {
     const newPlayer = this.playerRepository.create(playerData);
     return this.playerRepository.save(newPlayer);
   }
 
   // 📌 Actualizar un jugador
-  async update(id: number, playerData: Partial<Player>): Promise<Player> {
-    const player = await this.findById(id);
+  async updatePlayer(id: number, playerData: Partial<Player>): Promise<Player> {
+    const player = await this.getPlayerById(id);
     const updatedPlayer = Object.assign(player, playerData);
     return this.playerRepository.save(updatedPlayer);
   }
 
   // 📌 Eliminar un jugador
-  async delete(id: number): Promise<void> {
+  async deletePlayer(id: number): Promise<void> {
     const result = await this.playerRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundError(`Jugador con ID ${id} no encontrado`);
@@ -44,7 +44,7 @@ export class PlayerService {
   }
 
   // 📌 Filtrar jugadores por rol
-  async findByRole(role: PlayerRole): Promise<Player[]> {
+  async getPlayerByRole(role: PlayerRole): Promise<Player[]> {
     return this.playerRepository.find({
       where: { rol: role },
     });

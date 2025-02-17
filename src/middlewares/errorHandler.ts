@@ -1,58 +1,125 @@
-import { Context, Next } from 'hono';
+import { Request, Response, NextFunction } from 'express';
 import {
-  ValidationError,
-  DuplicateEntryError,
-  PrimaryKeyEntryError,
-  ForeignKeyEntryError,
-  BadRequestError,
-  MethodNotAllowedError,
-  UnsupportedMediaTypeError,
-  RateLimitExceededError,
-  InternalServerError,
-  BadGatewayError,
-  ServiceUnavailableError,
-  GatewayTimeoutError,
-  NotFoundError,
+    ValidationError,
+    DuplicateEntryError,
+    PrimaryKeyEntryError,
+    ForeignKeyEntryError,
+    BadRequestError,
+    MethodNotAllowedError,
+    UnsupportedMediaTypeError,
+    RateLimitExceededError,
+    InternalServerError,
+    BadGatewayError,
+    ServiceUnavailableError,
+    GatewayTimeoutError,
+    NotFoundError,
 } from '../middlewares/appError';
 import { resultHandler } from '../middlewares/resultHandler';
 
-export const errorHandler = async (c: Context, next: Next) => {
-  try {
-    await next();
-  } catch (error) {
-    if (
-      error instanceof ValidationError ||
-      error instanceof NotFoundError ||
-      error instanceof DuplicateEntryError ||
-      error instanceof PrimaryKeyEntryError ||
-      error instanceof ForeignKeyEntryError ||
-      error instanceof BadRequestError ||
-      error instanceof MethodNotAllowedError ||
-      error instanceof UnsupportedMediaTypeError ||
-      error instanceof RateLimitExceededError ||
-      error instanceof InternalServerError ||
-      error instanceof BadGatewayError ||
-      error instanceof ServiceUnavailableError ||
-      error instanceof GatewayTimeoutError
-    ) {
-      return resultHandler(
-        {
-          status: error.statusCode,
-          success: false,
-          result: error.message,
-        },
-        c,
-      );
+const errorHandler = (
+    error: Error,
+    _req: Request,
+    res: Response,
+    _next: NextFunction,
+) => {
+    if (error instanceof ValidationError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
     }
 
-    // Error genérico si no coincide con ninguna clase específica
-    return resultHandler(
-      {
-        status: 500,
-        success: false,
-        result: 'Error interno del servidor',
-      },
-      c,
-    );
-  }
+    if (error instanceof NotFoundError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    if (error instanceof DuplicateEntryError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    if (
+        error instanceof PrimaryKeyEntryError ||
+        error instanceof ForeignKeyEntryError
+    ) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    if (error instanceof BadRequestError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    if (error instanceof MethodNotAllowedError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    if (error instanceof UnsupportedMediaTypeError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    if (error instanceof RateLimitExceededError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    if (error instanceof InternalServerError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    if (error instanceof BadGatewayError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    if (error instanceof ServiceUnavailableError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    if (error instanceof GatewayTimeoutError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    // Error genérico en caso de que no coincida con ningún tipo específico
+    if (!res.headersSent) {
+        return resultHandler(
+            {
+                status: 500,
+                success: false,
+                result: 'Error interno del servidor',
+            },
+            res,
+        );
+    }
 };
+
+export default errorHandler;
