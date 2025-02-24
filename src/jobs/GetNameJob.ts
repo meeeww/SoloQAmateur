@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import axios from 'axios';
-const RIOT_API_KEY = process.env.RIOT_API_KEY;
 
+const RIOT_API_KEY = process.env.RIOT_API_KEY;
 import { PlayerService } from '../services/PlayerService';
 const playerService = new PlayerService();
 
@@ -29,11 +29,26 @@ const getAllPlayers = async () => {
         opgg: `https://www.op.gg/summoners/euw/${summonerInfo.data.gameName}-${summonerInfo.data.tagLine}`,
       });
 
-      // Espera 1 segundo antes de realizar la siguiente solicitud
-      await wait(1000); // 1000 ms = 1 segundo
-    } catch (error) {
-      console.log(`Error obteniendo datos de name ${player.leagueName}`);
+      // Obtener tiempo de espera recomendado
+      const retryAfter = summonerInfo.headers['retry-after'];
+      const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 1200; // 1.2s por defecto
 
+      console.log(`Esperando ${waitTime}ms antes de la próxima solicitud...`);
+      await wait(waitTime);
+    } catch (error: any) {
+      if (error.response?.status === 429) {
+        const retryAfter = error.response.headers['retry-after'];
+        const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 5000; // Espera 5s si no hay header
+
+        console.warn(
+          `Rate limit excedido. Esperando ${waitTime}ms antes de reintentar...`,
+        );
+        await wait(waitTime);
+      } else {
+        console.error(
+          `Error obteniendo datos de ${player.leagueName}: ${error.message}`,
+        );
+      }
     }
   }
 };
