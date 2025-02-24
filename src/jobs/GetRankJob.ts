@@ -9,7 +9,7 @@ const playerService = new PlayerService();
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const GetRankJob = () => {
-  cron.schedule('5,10,15,20,25,30,35,40,45,50,55,0 * * * *', () => {
+  cron.schedule('5,20,35,50 * * * *', () => {
     getAllPlayers();
   });
 };
@@ -57,7 +57,7 @@ const getAllPlayers = async () => {
 
         // Obtener tiempo de espera recomendado
         const retryAfter = response.headers['retry-after'];
-        const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 1200; // 1.2s por defecto
+        const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 600000; // 1.2s por defecto
 
         console.log(`Esperando ${waitTime}ms antes de la próxima solicitud...`);
         await wait(waitTime);
@@ -65,7 +65,7 @@ const getAllPlayers = async () => {
     } catch (error: any) {
       if (error.response?.status === 429) {
         const retryAfter = error.response.headers['retry-after'];
-        const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 5000; // Espera 5s si no hay header
+        const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 600000; // Espera 5s si no hay header
 
         console.warn(
           `Rate limit excedido. Esperando ${waitTime}ms antes de reintentar...`,
