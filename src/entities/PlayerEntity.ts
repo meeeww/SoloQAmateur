@@ -74,6 +74,12 @@ export class Player {
   @Column({ type: 'varchar', default: '' })
   opgg!: string;
 
+  @Column({ type: 'varchar', default: '' })
+  teamName!: string;
+
+  @Column({ type: 'varchar', default: 'IRON IV' })
+  completeRank!: string;
+
   @Column({
     nullable: true,
     type: 'enum',

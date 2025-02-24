@@ -30,6 +30,7 @@ const getAllPlayers = async () => {
           await playerService.updatePlayer(player.id, {
             tier: soloQueueInfo.tier,
             rank: soloQueueInfo.rank,
+            completeRank: soloQueueInfo.tier + ' ' + soloQueueInfo.rank,
             leaguePoints: soloQueueInfo.leaguePoints,
             partidas: soloQueueInfo.wins + soloQueueInfo.losses,
             victorias: soloQueueInfo.wins,

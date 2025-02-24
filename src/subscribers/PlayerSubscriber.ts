@@ -1,10 +1,14 @@
 import {
   EventSubscriber,
   EntitySubscriberInterface,
-  UpdateEvent,
 } from 'typeorm';
 import { Player } from '../entities/PlayerEntity';
 import { Server } from 'socket.io';
+
+import { PlayerService } from '../services/PlayerService';
+import { sortPlayerList } from '../utils/sortPlayerList';
+
+const playerService = new PlayerService();
 
 @EventSubscriber()
 export class StatsSubscriber implements EntitySubscriberInterface<Player> {
@@ -18,9 +22,11 @@ export class StatsSubscriber implements EntitySubscriberInterface<Player> {
     return Player;
   }
 
-  afterUpdate(event: UpdateEvent<Player>): void {
-    console.log('Stats updated:', event.entity);
+  async afterUpdate(): Promise<void> {
+    const playerList = await playerService.getAllPlayers();
 
-    this.io.emit('playerUpdated');
+    const sortedPlayerList = await sortPlayerList(playerList);
+
+    this.io.emit('playerList', sortedPlayerList);
   }
 }

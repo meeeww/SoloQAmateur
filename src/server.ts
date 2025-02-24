@@ -5,7 +5,7 @@ import AppDataSource from './config/ormconfig';
 import { StatsSubscriber } from './subscribers/PlayerSubscriber';
 import { startAllJobs } from './jobs/startAllJobs';
 
-const PORT = 3502;
+const PORT = 7566;
 
 AppDataSource.initialize()
   .then(() => {

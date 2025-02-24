@@ -22,7 +22,7 @@ export class PlayerService {
     >[]
   > {
     return this.playerRepository.find({
-      select: ['leagueTag', 'leagueName', 'id', 'leagueId', 'leaguePuuid'],
+      select: ['leagueTag', 'leagueName', 'id', 'leagueId', 'leaguePuuid', 'teamName'],
     });
   }
 
@@ -61,7 +61,7 @@ export class PlayerService {
     });
   }
 
-  async createPlayersFromMultiOpgg(url: string): Promise<Player[]> {
+  async createPlayersFromMultiOpgg(url: string, teamName: string): Promise<Player[]> {
     const players: Player[] = [];
 
     // 1️⃣ Extraer la lista de invocadores del enlace
@@ -82,6 +82,7 @@ export class PlayerService {
         leagueName: leagueName.trim(),
         leagueTag: leagueTag.trim(),
         username: leagueName.trim(),
+        teamName: teamName
       };
 
       // Buscar si ya existe el jugador

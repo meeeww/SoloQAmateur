@@ -2,6 +2,7 @@ import { DefaultEventsMap, Server, Socket } from 'socket.io';
 import http from 'http';
 
 import { PlayerService } from '../services/PlayerService';
+import { sortPlayerList } from '../utils/sortPlayerList';
 
 const playerService = new PlayerService();
 
@@ -36,5 +37,7 @@ const fetchPlayers = async (
 ) => {
   const playerList = await playerService.getAllPlayers();
 
-  socket.emit('playerList', playerList);
+  const sortedPlayerList = await sortPlayerList(playerList);
+
+  socket.emit('playerList', sortedPlayerList);
 };
