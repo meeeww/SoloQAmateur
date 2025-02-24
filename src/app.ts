@@ -33,7 +33,7 @@ app.use('/assets', express.static(publicPath));
 
 app.use(
   cors({
-    origin: ['https://duoqchallenge.com', 'https://www.duoqchallenge.com'],
+    origin: ['https://koryubudoficial.es', 'https://www.koryubudoficial.es'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: ['Content-Type', 'x-auth-token'],
   }),
