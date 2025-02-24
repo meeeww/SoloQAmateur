@@ -1,8 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum PlayerRole {
   TOP = 'Toplaner',
@@ -20,13 +16,13 @@ export class Player {
   @Column({ default: 0 })
   positionTable!: number;
 
-  @Column({ type: 'varchar', length: 16 })
+  @Column({ type: 'varchar' })
   username!: string;
 
-  @Column({ type: 'varchar', length: 16 })
+  @Column({ type: 'varchar' })
   leagueName!: string;
 
-  @Column({ type: 'varchar', length: 5 })
+  @Column({ type: 'varchar' })
   leagueTag!: string;
 
   @Column({ type: 'varchar', default: null, nullable: true })
@@ -35,22 +31,22 @@ export class Player {
   @Column({ type: 'varchar', default: null, nullable: true })
   leagueId!: string;
 
-  @Column({ type: 'varchar', length: 24, default: null, nullable: true })
+  @Column({ type: 'varchar', default: null, nullable: true })
   twitter!: string;
 
-  @Column({ type: 'varchar', length: 24, default: null, nullable: true })
+  @Column({ type: 'varchar', default: null, nullable: true })
   twitch!: string;
 
-  @Column({ type: 'varchar', length: 24, default: null, nullable: true })
+  @Column({ type: 'varchar', default: null, nullable: true })
   discord!: string;
 
-  @Column({ type: 'varchar', length: 64, default: null, nullable: true })
+  @Column({ type: 'varchar', default: null, nullable: true })
   icon!: string;
 
-  @Column({ type: 'varchar', length: 12, default: 'IRON' })
+  @Column({ type: 'varchar', default: 'IRON' })
   tier!: string;
 
-  @Column({ type: 'varchar', length: 4, default: 'IV' })
+  @Column({ type: 'varchar', default: 'IV' })
   rank!: string;
 
   @Column({ default: 0 })
