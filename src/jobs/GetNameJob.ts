@@ -6,7 +6,7 @@ import { PlayerService } from '../services/PlayerService';
 const playerService = new PlayerService();
 
 export const GetNameJob = () => {
-  cron.schedule('*/5 * * * *', () => {
+  cron.schedule('3,8,13,18,23,28,33,38,43,48,53,58 * * * *', () => {
     getAllPlayers();
   });
 };
