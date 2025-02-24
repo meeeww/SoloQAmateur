@@ -7,7 +7,7 @@ import { saveProfileIcon } from '../utils/getProfileIcon';
 const playerService = new PlayerService();
 
 export const GetIdJob = () => {
-  cron.schedule('*/1 * * * *', () => {
+  cron.schedule('*/5 * * * *', () => {
     getAllPlayers();
   });
 };
