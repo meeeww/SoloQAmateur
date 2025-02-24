@@ -1,21 +1,6 @@
 version: '3.8'
 
 services:
-  # Cliente para koryubudo
-  koryubudocliente:
-    container_name: koryubudocliente
-    image: koryubudocliente:latest
-    build:
-      context: ../SoloQAmateurCliente
-      dockerfile: ./Dockerfile
-    restart: always
-    ports:
-      - "7565:7565"
-    environment:
-      - DOCKER_CONTAINER=1
-    networks:
-      - koryubudo_network
-
   # API para koryubudo
   koryubudoapi:
     container_name: koryubudoapi
@@ -35,10 +20,4 @@ services:
     restart: always
     env_file:
       - .env
-    networks:
-      - koryubudo_network
     command: /bin/sh -c "npm start"
-
-networks:
-  koryubudo_network:
-    external: true

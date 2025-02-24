@@ -21,6 +21,3 @@ RUN npm run build
 
 # Expone el puerto en el que se ejecuta la aplicación
 EXPOSE 7566
-
-# 9. Usa PM2 para ejecutar la aplicación
-CMD ["pm2-runtime", "dist/index.js"]
