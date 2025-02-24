@@ -57,7 +57,7 @@ const getAllPlayers = async () => {
       // Espera 1 segundo antes de realizar la siguiente solicitud
       await wait(1000); // 1000 ms = 1 segundo
     } catch (error) {
-      console.error('Error fetching summoner info:', error);
+      console.log(`Error obteniendo datos de rank ${player.leagueName}`);
     }
   }
 };

@@ -32,7 +32,8 @@ const getAllPlayers = async () => {
       // Espera 1 segundo antes de realizar la siguiente solicitud
       await wait(1000); // 1000 ms = 1 segundo
     } catch (error) {
-      console.error(`Error obteniendo datos de ${player.leagueName}:`, error);
+      console.log(`Error obteniendo datos de name ${player.leagueName}`);
+
     }
   }
 };
