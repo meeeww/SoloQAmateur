@@ -1,5 +1,7 @@
 import { DataSource } from 'typeorm';
 
+import { Player } from '../entities/PlayerEntity';
+
 export const AppDataSource = new DataSource({
   type: 'mariadb',
   host: process.env.DB_HOST,
@@ -9,7 +11,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: ['dist/entities/**/*.js'],
+  entities: [Player],
   subscribers: [],
   migrations: [],
 });
