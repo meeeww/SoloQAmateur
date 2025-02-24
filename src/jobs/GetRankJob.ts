@@ -5,6 +5,9 @@ const RIOT_API_KEY = process.env.RIOT_API_KEY;
 import { PlayerService } from '../services/PlayerService';
 const playerService = new PlayerService();
 
+// Función de espera
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const GetRankJob = () => {
   cron.schedule('5,10,15,20,25,30,35,40,45,50,55,0 * * * *', () => {
     getAllPlayers();
@@ -50,6 +53,9 @@ const getAllPlayers = async () => {
           console.log('No data found for RANKED_SOLO_5x5');
         }
       }
+
+      // Espera 1 segundo antes de realizar la siguiente solicitud
+      await wait(1000); // 1000 ms = 1 segundo
     } catch (error) {
       console.error('Error fetching summoner info:', error);
     }

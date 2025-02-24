@@ -6,6 +6,9 @@ import { PlayerService } from '../services/PlayerService';
 import { saveProfileIcon } from '../utils/getProfileIcon';
 const playerService = new PlayerService();
 
+// Función de espera
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const GetIdJob = () => {
   cron.schedule('1,6,11,16,21,26,31,36,41,46,51,56 * * * *', () => {
     getAllPlayers();
@@ -40,6 +43,9 @@ const getAllPlayers = async () => {
           leaguePuuid: summonerInfo.data.puuid,
         });
       }
+
+      // Espera 1 segundo antes de realizar la siguiente solicitud
+      await wait(1000); // 1000 ms = 1 segundo
     } catch (error) {
       console.error(`Error obteniendo datos de ${player.leagueName}:`, error);
     }
