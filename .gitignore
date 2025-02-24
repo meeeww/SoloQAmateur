@@ -1,6 +1,5 @@
 # deps
 node_modules/
 .env
-package-lock.json
 bun.lock
 public/profileIcons
