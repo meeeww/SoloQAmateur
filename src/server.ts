@@ -4,6 +4,9 @@ import AppDataSource from './config/ormconfig';
 //import { fixStats } from './jobs/fixStats';
 import { StatsSubscriber } from './subscribers/PlayerSubscriber';
 import { startAllJobs } from './jobs/startAllJobs';
+import { getAllPlayersId } from './jobs/GetIdJob';
+import { getAllPlayersName } from './jobs/GetNameJob';
+import { getAllPlayersRank } from './jobs/GetRankJob';
 
 const PORT = 7566;
 
@@ -15,6 +18,9 @@ AppDataSource.initialize()
     AppDataSource.subscribers.push(statsSubscriber);
 
     startAllJobs();
+    getAllPlayersId();
+    getAllPlayersName();
+    getAllPlayersRank();
     //fixStats();
     //addPlayersToTeamsAndDuo(1)
     server.listen(PORT, () => {
