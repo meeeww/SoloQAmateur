@@ -9,7 +9,7 @@ const playerService = new PlayerService();
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const GetRankJob = () => {
-  cron.schedule('5,20,35,50 * * * *', () => {
+  cron.schedule('5,15,25,35,45,55 * * * *', () => {
     getAllPlayersRank();
   });
 };

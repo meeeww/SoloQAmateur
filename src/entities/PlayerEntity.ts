@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeUpdate } from 'typeorm';
 
 export enum PlayerRole {
   TOP = 'Toplaner',
@@ -83,4 +83,12 @@ export class Player {
     default: null,
   })
   rol!: PlayerRole;
+
+  @Column('bigint', { default: 0 })
+  updated!: number;
+
+  @BeforeUpdate()
+  updateEpoch() {
+    this.updated = Math.floor(Date.now() / 1000);
+  }
 }

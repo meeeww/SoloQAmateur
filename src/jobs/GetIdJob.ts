@@ -10,7 +10,7 @@ const playerService = new PlayerService();
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const GetIdJob = () => {
-  cron.schedule('1,16,31,46 * * * *', () => {
+  cron.schedule('1,11,21,31,41,51 * * * *', () => {
     getAllPlayersId();
   });
 };
