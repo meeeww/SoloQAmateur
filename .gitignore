@@ -2,4 +2,3 @@
 node_modules/
 .env
 bun.lock
-public/profileIcons

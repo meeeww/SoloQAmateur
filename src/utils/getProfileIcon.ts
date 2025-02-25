@@ -23,6 +23,8 @@ export async function saveProfileIcon(
 
         if (!response.ok) {
             console.log('No se pudo descargar la imagen del icono.');
+
+            return "0";
         }
 
         // Usar arrayBuffer en lugar de buffer
