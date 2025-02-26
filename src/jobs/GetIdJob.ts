@@ -21,7 +21,7 @@ export const getAllPlayersId = async () => {
   for (const player of players) {
     try {
       const summonerInfo = await axios.get(
-        `https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${player.leagueName}/${player.leagueTag}?api_key=${RIOT_API_KEY}`,
+        `https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(player.leagueName)}/${encodeURIComponent(player.leagueTag)}?api_key=${RIOT_API_KEY}`,
       );
 
       let summonerInfo2;
