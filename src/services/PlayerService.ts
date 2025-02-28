@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Player, PlayerRole } from '../entities/PlayerEntity';
 import { AppDataSource } from '../config/ormconfig';
 import { NotFoundError } from '../middlewares/appError';
@@ -14,7 +14,7 @@ export class PlayerService {
   async getAllPlayers(): Promise<Player[]> {
     return this.playerRepository.find();
   }
-
+  
   async getAllPlayersSimple(): Promise<
     Pick<
       Player,
@@ -27,6 +27,22 @@ export class PlayerService {
         updated: 'ASC',
       },
       take: 20,
+    });
+  }
+
+  async getAllPlayersSimpleOnly1(): Promise<
+    Pick<
+      Player,
+      'leagueTag' | 'leagueName' | 'id' | 'leagueId' | 'leaguePuuid'
+    >[]
+  > {
+    return this.playerRepository.find({
+      select: ['leagueTag', 'leagueName', 'id', 'leagueId', 'leaguePuuid'],
+      where: { rol: IsNull() },
+      order: {
+        updated: 'ASC',
+      },
+      take: 1,
     });
   }
 
