@@ -7,6 +7,7 @@ import { startAllJobs } from './jobs/startAllJobs';
 import { getAllPlayersId } from './jobs/GetIdJob';
 import { getAllPlayersName } from './jobs/GetNameJob';
 import { getAllPlayersRank } from './jobs/GetRankJob';
+import { getAllPlayersRoles } from './jobs/GetPlayerRole';
 
 const PORT = 7566;
 
@@ -21,6 +22,7 @@ AppDataSource.initialize()
     getAllPlayersId();
     getAllPlayersName();
     getAllPlayersRank();
+    getAllPlayersRoles();
     //fixStats();
     //addPlayersToTeamsAndDuo(1)
     server.listen(PORT, () => {
