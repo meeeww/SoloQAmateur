@@ -64,7 +64,7 @@ export class Player {
   @Column({ default: 0 })
   derrotas!: number;
 
-  @Column('decimal', { precision: 5, scale: 2, default: 0 })
+  @Column('numeric', { precision: 5, scale: 2, default: 0 })
   winRate!: number;
 
   @Column({ type: 'varchar', default: '' })
