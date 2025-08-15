@@ -1,21 +1,15 @@
-FROM node:20.11.0 AS base
+FROM node:20.11.0
 
 WORKDIR /src
-    
+
+# Copiamos dependencias e instalamos
 COPY package.json package-lock.json ./
 RUN npm install
-    
+
+# Copiamos el resto del código y construimos
 COPY . .
-    
 RUN npm run build
-    
-FROM node:20.11.0 AS worker
-    
-WORKDIR /src
-    
-COPY --from=base /src /src
-    
+
 EXPOSE 3902
-    
-CMD ["npm", "run", "start:worker"]
-    
+
+CMD ["npm", "run", "start"]
