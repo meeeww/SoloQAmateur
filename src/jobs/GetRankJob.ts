@@ -19,9 +19,9 @@ export const getAllPlayersRank = async () => {
 
   for (const player of players) {
     try {
-      if (player.leagueId) {
+      if (player.leaguePuuid) {
         const response = await axios.get(
-          `https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${player.leagueId}?api_key=${RIOT_API_KEY}`,
+          `https://euw1.api.riotgames.com/lol/league/v4/entries/by-puuid/${player.leaguePuuid}?api_key=${RIOT_API_KEY}`,
         );
 
         // Filtramos el array para obtener solo el RANKED_SOLO_5x5
